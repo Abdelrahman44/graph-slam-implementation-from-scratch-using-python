@@ -27,6 +27,7 @@ class robot:
         self.sensor_range = sensor_range
         self.sensor_noise = sensor_noise
         self.actuator_noise = actuator_noise
+        self.landmarks = world['landamrks']
         self.x, self.y = self.world_size/2, self.world_size/2
         
     def move(x_steps, y_steps):
@@ -48,6 +49,15 @@ class robot:
         
     def sense():
         
+        measurements = []
+        
+        for l in range(len(self.landmarks)):
+            dx, dy = self.landmarks[l][1]-self.x+self.rand()*self.measurement_noise, self.landmarks[l][2]-self.y + self.rand() * self.measurement_noise
+            
+            if (dx**2 + dy**2) < self.measurement_range or dy > self.measurement_range:
+                measurements.append([l, dx, dy])
+                
+        return measurements
         
             
     
