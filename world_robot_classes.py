@@ -17,7 +17,6 @@ class world:
         return {'world_size': self.world_size, "landamarks":self.landmarks}
 
 
-# +
 class robot:
     
     def __init__(self, world_size = 100.0, measurement_range = 30.0,
@@ -31,51 +30,49 @@ class robot:
         self.measurement_noise = measurement_noise
         self.landmarks = []
         self.num_landmarks = 0
+    
+    def rand(self):
+        return random.random() * 2.0 - 1.0
+    
         
-    def move(self, x_steps, y_steps):
+    def move(self, dx, dy):
+        
+        x = self.x + dx + self.rand() * self.motion_noise
+        y = self.y + dy + self.rand() * self.motion_noise
+        
+        if x < 0.0 or x > self.world_size or y < 0.0 or y > self.world_size:
+            return False
+        else:
+            self.x = x
+            self.y = y
+            return True
+            
+            
+        
+    def sense(self):
 
-        self.x += x_steps + random.random()*self.motion_noise
-        self.y += y_stpes + random.random()*self.motion_noise
-        
-        if self.x >= self.world_size/2:
-            self.x = self.world_size/2
-        elif self.x <= 0:
-            self.x = 0
-            
-        if self.y >= self.world_size/2:
-            self.y = self.world_size/2
-        elif self.y <= 0:
-            self.y = 0
-            
-            
-        
-    def sense():
-        
-        
+           
         measurements = []
-        
+
         for l in range(len(self.landmarks)):
-            dx, dy = self.landmarks[l][1]-self.x+self.rand()*self.measurement_noise, self.landmarks[l][2]-self.y + self.rand() * self.measurement_noise
+            dx, dy = self.landmarks[l][0]-self.x+self.rand()*self.measurement_noise, self.landmarks[l][1]-self.y + self.rand() * self.measurement_noise
             
             if (dx**2 + dy**2) < self.measurement_range or dy > self.measurement_range:
                 measurements.append([l, dx, dy])
-                
+        
+        
         return measurements
+
     
-def make_landmarks(self, num_landmarks):
+    def make_landmarks(self, num_landmarks):
         self.landmarks = []
         for i in range(num_landmarks):
             self.landmarks.append([round(random.random() * self.world_size),
                                    round(random.random() * self.world_size)])
         self.num_landmarks = num_landmarks
         
-def __repr__(self):
-    return 'Robot: [x=%.5f y=%.5f]'  % (self.x, self.y)
-# -
-
-
-
-
+    def __repr__(self):
+        return 'Robot: [x=%.5f y=%.5f]'  % (self.x, self.y)
 
 
 
