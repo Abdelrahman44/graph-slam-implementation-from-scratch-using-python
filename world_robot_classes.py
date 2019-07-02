@@ -17,23 +17,25 @@ class world:
         return {'world_size': self.world_size, "landamarks":self.landmarks}
 
 
+# +
 class robot:
     
-    def __init__(self, world, sensor_range=100, sensor_noise=2, actuator_noise=2):
-        #robot's sensor and actuator are assumed to have noise, which affects the robot's state and measurements
-        # the robot is also assumed to be initially at the world's center point
+    def __init__(self, world_size = 100.0, measurement_range = 30.0,
+                 motion_noise = 1.0, measurement_noise = 1.0):
+        self.measurement_noise = 0.0
+        self.world_size = world_size
+        self.measurement_range = measurement_range
+        self.x = world_size / 2.0
+        self.y = world_size / 2.0
+        self.motion_noise = motion_noise
+        self.measurement_noise = measurement_noise
+        self.landmarks = []
+        self.num_landmarks = 0
         
-        self.world_size = world['world_size']
-        self.sensor_range = sensor_range
-        self.sensor_noise = sensor_noise
-        self.actuator_noise = actuator_noise
-        self.landmarks = world['landamrks']
-        self.x, self.y = self.world_size/2, self.world_size/2
-        
-    def move(x_steps, y_steps):
+    def move(self, x_steps, y_steps):
 
-        self.x += x_steps + random.random()*self.actuator_noise
-        self.y += y_stpes + random.random()*self.actuator_noise
+        self.x += x_steps + random.random()*self.motion_noise
+        self.y += y_stpes + random.random()*self.motion_noise
         
         if self.x >= self.world_size/2:
             self.x = self.world_size/2
@@ -59,6 +61,17 @@ class robot:
                 measurements.append([l, dx, dy])
                 
         return measurements
+    
+def make_landmarks(self, num_landmarks):
+        self.landmarks = []
+        for i in range(num_landmarks):
+            self.landmarks.append([round(random.random() * self.world_size),
+                                   round(random.random() * self.world_size)])
+        self.num_landmarks = num_landmarks
+        
+def __repr__(self):
+    return 'Robot: [x=%.5f y=%.5f]'  % (self.x, self.y)
+# -
 
 
 
