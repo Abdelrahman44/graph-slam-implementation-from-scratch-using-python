@@ -3,6 +3,7 @@ from math import *
 import random
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 # # Function to deisplay the world and robot
 
