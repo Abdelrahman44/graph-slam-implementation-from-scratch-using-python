@@ -1,49 +1,64 @@
-# +
-
 from world_robot_classes import world, robot
 import math
 import random
-import matplolib.pyplot as plt
+import matplotlib.pyplot as plt
 import seaborn as sns
-
-
-# -
 
 # # Function to deisplay the world and robot
 
-def disp_env(world, robot):
+def display_world(world_size, position, landmarks=None):
     
-    world_size = world['world_size']
-    landmarks = world['landmarks']
-    
+    # using seaborn, set background grid to gray
     sns.set_style("dark")
+
+    # Plot grid of values
     world_grid = np.zeros((world_size+1, world_size+1))
+
+    # Set minor axes in between the labels
     ax=plt.gca()
     cols = world_size+1
     rows = world_size+1
+
     ax.set_xticks([x for x in range(1,cols)],minor=True )
     ax.set_yticks([y for y in range(1,rows)],minor=True)
+    
+    # Plot grid on minor axes in gray (width = 1)
     plt.grid(which='minor',ls='-',lw=1, color='white')
+    
+    # Plot grid on major axes in larger width
     plt.grid(which='major',ls='-',lw=2, color='white')
-    ax.text(robot.x, robot/y, 'o', ha='center', va='center', color='r', fontsize=30)
     
-    for pos in landmarks:
-        ax.text(pos[1], pos[2], 'x', ha='center', va='center', color='purple', fontsize=20)
+    # Create an 'o' character that represents the robot
+    # ha = horizontal alignment, va = vertical
+    ax.text(position[0], position[1], 'o', ha='center', va='center', color='r', fontsize=30)
     
+    # Draw landmarks if they exists
+    if(landmarks is not None):
+        # loop through all path indices and draw a dot (unless it's at the car's location)
+        for pos in landmarks:
+            if(pos != position):
+                ax.text(pos[0], pos[1], 'x', ha='center', va='center', color='purple', fontsize=20)
+    
+    # Display final result
     plt.show()
 
-    
-
-    
 
 # Function to synthesize measurement and movement data
 
-def make_data(N, num_landmarks, measurement_range, motion_noise, measurement_noise, distance):
+def make_data(N, num_landmarks, world_size, measurement_range, motion_noise, 
+              measurement_noise, distance):
+
+    # check that data has been made
+    try:
+        check_for_data(num_landmarks, world_size, measurement_range, motion_noise, measurement_noise)
+    except ValueError:
+        print('Error: You must implement the sense function in robot_class.py.')
+        return []
     
     complete = False
     
-    w = world(world_size, num_landmarks)
-    r = robot(measurement_range, measurement_noise, motion_noise, w)
+    r = robot(world_size, measurement_range, motion_noise, measurement_noise)
+    r.make_landmarks(num_landmarks)
 
     while not complete:
 
@@ -84,4 +99,4 @@ def make_data(N, num_landmarks, measurement_range, motion_noise, measurement_noi
 
 
     return data
->>>>>>> d029c2da7a17b5adc3648fbb06bef25cec4c41be
+
