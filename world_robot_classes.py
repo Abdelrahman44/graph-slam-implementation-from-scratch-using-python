@@ -19,7 +19,7 @@ class world:
 
 class robot:
     
-    def __init__(self, sensor_range=100, sensor_noise=2, actuator_noise=2, world):
+    def __init__(self, world, sensor_range=100, sensor_noise=2, actuator_noise=2):
         #robot's sensor and actuator are assumed to have noise, which affects the robot's state and measurements
         # the robot is also assumed to be initially at the world's center point
         
@@ -27,6 +27,7 @@ class robot:
         self.sensor_range = sensor_range
         self.sensor_noise = sensor_noise
         self.actuator_noise = actuator_noise
+        self.landmarks = world['landamrks']
         self.x, self.y = self.world_size/2, self.world_size/2
         
     def move(x_steps, y_steps):
@@ -36,20 +37,32 @@ class robot:
         
         if self.x >= self.world_size/2:
             self.x = self.world_size/2
-        else if self.x <= 0:
+        elif self.x <= 0:
             self.x = 0
             
         if self.y >= self.world_size/2:
             self.y = self.world_size/2
-        else if self.y <= 0:
+        elif self.y <= 0:
             self.y = 0
             
             
         
     def sense():
-
         
-
-    
-
         
+        measurements = []
+        
+        for l in range(len(self.landmarks)):
+            dx, dy = self.landmarks[l][1]-self.x+self.rand()*self.measurement_noise, self.landmarks[l][2]-self.y + self.rand() * self.measurement_noise
+            
+            if (dx**2 + dy**2) < self.measurement_range or dy > self.measurement_range:
+                measurements.append([l, dx, dy])
+                
+        return measurements
+
+
+
+
+
+
+
