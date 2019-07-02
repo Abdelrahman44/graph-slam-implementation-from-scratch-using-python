@@ -1,5 +1,5 @@
-### Tthe world class which generates the world and its landmarks
-### the robot class, which contains robots attributes and methods for navigating and sensing the world
+# ## Tthe world class which generates the world and its landmarks
+# ## the robot class, which contains robots attributes and methods for navigating and sensing the world
 
 import math
 import random
@@ -47,9 +47,9 @@ class robot:
             
         
     def sense():
+
         
-        
-            
+
     
-        
+
         
